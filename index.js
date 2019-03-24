@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 const Discord = require(`discord.js`);
-const Jimp = require(`Jimp`);
+const Jimp = require(`jimp`);
 const mysql = require('mysql');
 const client = new Discord.Client();
 var cooldowns = {};
