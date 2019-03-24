@@ -41,10 +41,10 @@ con.connect(function (err) {
     })
 
     client.on('guildCreate', guild => {
-        guild.channels.find(ch => ch.position == 0).send({
+        guild.channels.find(ch => ch.position == 0 || ch.type == "text").send({
             embed: {
                 title: `Hi guys :D`,
-                description: "To set work channnel: **+setchannel #chat_name**\n" + "example: +setchannel " + guild.channels.find(ch => ch.position == guild.channels.filter(chan => chan.type == 'text').length - 1) + "\nIf you wonna add me to another server: [Click here](https://discordapp.com/api/oauth2/authorize?client_id=559247918280867848&permissions=0&scope=bot)",
+                description: "To set work channnel: **+setchannel #chat_name**\n" + "example: +setchannel " + guild.channels.find(ch => ch.position == (guild.channels.filter(chan => chan.type == 'text').length - 1) && ch.type == text) + "\nIf you wonna add me to another server: [Click here](https://discordapp.com/api/oauth2/authorize?client_id=559247918280867848&permissions=0&scope=bot)",
                 footer: {
                     icon_url: client.user.displayAvatarURL,
                     text: `Ony admins can use that command!`
