@@ -1,0 +1,25 @@
+{
+  "name": "anime-searcher",
+  "version": "1.0.0",
+  "description": "Discord bot to search anime by screenshots with trace.moe api",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "discord",
+    "anime-searcher",
+    "bot",
+    "javascript",
+    "trace.moe",
+    "wnm"
+  ],
+  "author": "wnm",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "jimp": "^0.6.0",
+    "mysql": "^2.16.0",
+    "node-fetch": "^2.3.0"
+  }
+}
