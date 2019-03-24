@@ -4,7 +4,8 @@
   "description": "Discord bot to search anime by screenshots with trace.moe api",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "start": "node index.js"
   },
   "keywords": [
     "discord",
