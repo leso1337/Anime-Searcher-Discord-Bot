@@ -104,9 +104,9 @@ con.connect(function (err) {
             var urlToArr = url.toLowerCase().split('.')
             if (img_formats.indexOf(urlToArr[urlToArr.length - 1]) == -1) return
             Jimp.read(url, function (err, img) {
-                if (err) throw err;
+                if (err) return
                 img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
-                    if (e) throw e
+                    if (e) return
                     fetch('https://trace.moe/api/search', {
                             method: 'POST',
                             body: JSON.stringify({
