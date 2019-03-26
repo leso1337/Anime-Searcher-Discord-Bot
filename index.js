@@ -128,7 +128,19 @@ con.connect(function (err) {
                                 return newarr
                             }
                             var rawdesc = result.docs.map((e, i) => {
-                                return `[${e.title_romaji}](https://anilist.co/anime/${e.anilist_id})`
+                                if(e.similarity>0.98) return message.channel.send({embed:{
+                                    title: e.title_romaji,
+                                    footer: {
+                                        icon_url: msg.author.displayAvatarURL,
+                                        text: `requested by ${msg.author.username}, author: wnm#1663`
+                                    },
+                                    thumbnail: {
+                                        url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+                                    },
+                                    description: `Anime: **${e.title_romaji}**\nEpisode: **${e.episode}**\nTimestamp: **${~~(e.at%60)}:${(e.at-(~~(e.at%60))).toFixed(2)}**\nMyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\nNSFW: ${e.is_adult ? 'Yes! Yes! Yes!' : 'No 😫'} `,
+                                    
+                                },`https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`)
+                                return `[${e.title_romaji}](https://myanimelist.net/anime/${e.mal_id})`
                             });
                             rawdesc = unique(rawdesc);
 
