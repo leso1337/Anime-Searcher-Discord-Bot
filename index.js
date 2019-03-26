@@ -128,7 +128,7 @@ con.connect(function (err) {
                                 return newarr
                             }
                             var rawdesc = result.docs.map((e, i) => {
-                                if(e.similarity>0.98) return message.channel.send({embed:{
+                                if(e.similarity>0.98) return msg.channel.send({embed:{
                                     title: e.title_romaji,
                                     footer: {
                                         icon_url: msg.author.displayAvatarURL,
