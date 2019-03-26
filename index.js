@@ -127,7 +127,7 @@ con.connect(function (err) {
                                 })
                                 return newarr
                             }
-                            for(i in result.docs){
+                            for(var i = 0; i<result.docs.length; i++){
                                 var e = result.docs[i];
                                 if(e.similarity>0.98) return msg.channel.send({embed:{
                                     title: e.title_romaji,
@@ -138,8 +138,11 @@ con.connect(function (err) {
                                     thumbnail: {
                                         url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
                                     },
+                                    image: {
+                                        url: `https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`
+                                    },
                                     description: `Anime: **${e.title_romaji}**\nEpisode: **${e.episode}**\nTimestamp: **${~~(e.at%60)}:${(e.at-(~~(e.at%60))).toFixed(2)}**\nMyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\nNSFW: ${e.is_adult ? 'Yes! Yes! Yes!' : 'No 😫'} `,
-                                }},`Video: https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`)
+                                }})
                             }
                             var rawdesc = result.docs.map((e, i) => {
                                 return `[${e.title_romaji}](https://myanimelist.net/anime/${e.mal_id})`
