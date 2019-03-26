@@ -127,7 +127,8 @@ con.connect(function (err) {
                                 })
                                 return newarr
                             }
-                            var rawdesc = result.docs.map((e, i) => {
+                            for(var i = 0; i<result.docs; i++){
+                                var e = result.docs[i];
                                 if(e.similarity>0.98) return msg.channel.send({embed:{
                                     title: e.title_romaji,
                                     footer: {
@@ -135,13 +136,12 @@ con.connect(function (err) {
                                         text: `requested by ${msg.author.username}, author: wnm#1663`
                                     },
                                     thumbnail: {
-                                        url: `https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`
+                                        url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
                                     },
                                     description: `Anime: **${e.title_romaji}**\nEpisode: **${e.episode}**\nTimestamp: **${~~(e.at%60)}:${(e.at-(~~(e.at%60))).toFixed(2)}**\nMyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\nNSFW: ${e.is_adult ? 'Yes! Yes! Yes!' : 'No 😫'} `,
-                                    image: {
-                                        url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
-                                    }
-                                }})
+                                }},`Video: https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`)
+                            }
+                            var rawdesc = result.docs.map((e, i) => {
                                 return `[${e.title_romaji}](https://myanimelist.net/anime/${e.mal_id})`
                             });
                             rawdesc = unique(rawdesc);
