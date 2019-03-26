@@ -93,12 +93,12 @@ con.connect(function (err) {
         }
         if (msg.channel.id !== guilds_settings[msg.guild.id]) return
         const img_formats = ['png', 'jpeg', 'jpg'];
-        if(msg.content.indexOf(".")> -1 && 
+        var attch = msg.attachments.first()
+                if(msg.content.indexOf(".")> -1 && 
            msg.content.startwith('http') &&
            img_formats.indexOf(msg.content.split('.')[msg.content.split('.').length - 1]) == -1) {
              attch = msg.content;
         }
-        var attch = msg.attachments.first()
         if (attch) {
             var url = attch.url;
             var urlToArr = url.toLowerCase().split('.')
