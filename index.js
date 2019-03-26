@@ -141,7 +141,7 @@ con.connect(function (err) {
                                     image: {
                                         url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
                                     }
-                                })
+                                }})
                                 return `[${e.title_romaji}](https://myanimelist.net/anime/${e.mal_id})`
                             });
                             rawdesc = unique(rawdesc);
