@@ -95,8 +95,8 @@ con.connect(function (err) {
         const img_formats = ['png', 'jpeg', 'jpg'];
         var attch = msg.attachments.first()
                 if(msg.content.indexOf(".")> -1 && 
-           msg.content.startwith('http') &&
-           img_formats.indexOf(msg.content.split('.')[msg.content.split('.').length - 1]) == -1) {
+                   msg.content.startsWith('http') &&
+                   img_formats.indexOf(msg.content.split('.')[msg.content.split('.').length - 1]) == -1) {
              attch = msg.content;
         }
         if (attch) {
