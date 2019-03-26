@@ -54,6 +54,7 @@ con.connect(function (err) {
     })
 
     client.on('message', msg => {
+        if(msg.author.bot) return
         if (msg.content.toLowerCase().startsWith('+setchannel')) {
             if (msg.member.hasPermission('KICK_MEMBERS')) {
                 if (cooldowns[msg.guild.id]) return msg.channel.send(`This command is on cooldown on this server. Please wait **${cooldowns[msg.guild.id]} sec.**`)
