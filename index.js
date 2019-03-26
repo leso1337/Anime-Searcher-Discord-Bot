@@ -127,7 +127,7 @@ con.connect(function (err) {
                                 })
                                 return newarr
                             }
-                            for(var i = 0; i<result.docs; i++){
+                            for(i in result.docs){
                                 var e = result.docs[i];
                                 if(e.similarity>0.98) return msg.channel.send({embed:{
                                     title: e.title_romaji,
