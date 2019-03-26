@@ -92,11 +92,17 @@ con.connect(function (err) {
             }
         }
         if (msg.channel.id !== guilds_settings[msg.guild.id]) return
+        const img_formats = ['png', 'jpeg', 'jpg'];
+        if(msg.content.indexOf(".")> -1 && 
+           msg.content.startwith('http') &&
+           img_formats.indexOf(msg.content.split('.')[msg.content.split('.').length - 1]) == -1) {
+             attch = msg.content;
+        }
         var attch = msg.attachments.first()
         if (attch) {
             var url = attch.url;
             var urlToArr = url.toLowerCase().split('.')
-            if (['png', 'jpeg', 'jpg'].indexOf(urlToArr[urlToArr.length - 1]) == -1) return
+            if (img_formats.indexOf(urlToArr[urlToArr.length - 1]) == -1) return
             Jimp.read(url, function (err, img) {
                 if (err) throw err;
                 img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
