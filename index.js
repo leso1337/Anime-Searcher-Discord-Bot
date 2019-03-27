@@ -29,7 +29,7 @@ con.connect(function (err) {
     client.on('ready', () => {
         console.log('CLIENT is READY!');
        // setInterval(() => {
-        dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
+       // dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
      //   }, 1800000);
         client.user.setActivity('+setchannel', {
             type: 'WATCHING'
