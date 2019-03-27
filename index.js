@@ -28,9 +28,9 @@ con.connect(function (err) {
     console.log('MYSQL is READY!')
     client.on('ready', () => {
         console.log('CLIENT is READY!');
-        setInterval(() => {
+       // setInterval(() => {
         dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
-        }, 1800000);
+     //   }, 1800000);
         client.user.setActivity('+setchannel', {
             type: 'WATCHING'
         });
