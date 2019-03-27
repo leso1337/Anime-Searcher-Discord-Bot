@@ -3,6 +3,8 @@ const Discord = require(`discord.js`);
 const Jimp = require(`jimp`);
 const mysql = require('mysql');
 const client = new Discord.Client();
+const DBL = require("dblapi.js");
+const dbl = new DBL(process.env.dbl_token, client);
 var cooldowns = {};
 var con = mysql.createConnection({
     host: process.env.host,
@@ -26,6 +28,9 @@ con.connect(function (err) {
     console.log('MYSQL is READY!')
     client.on('ready', () => {
         console.log('CLIENT is READY!');
+        setInterval(() => {
+        dbl.postStats(client.guilds.size, client.shards.Id, client.shards.total);
+        }, 1800000);
         client.user.setActivity('+setchannel', {
             type: 'WATCHING'
         });
