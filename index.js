@@ -108,7 +108,7 @@ con.connect(function (err) {
                 if (err) return
                 img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
                     if (e) return
-                    fetch('https://trace.moe/api/search', {
+                    fetch(`https://trace.moe/api/search?token=${process.env.trace_moe_token}`, {
                             method: 'POST',
                             body: JSON.stringify({
                                 image: img64
