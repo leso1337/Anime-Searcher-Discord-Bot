@@ -22,7 +22,7 @@ setInterval(() => {
 	}
 }, 1000);
 
-con.connect(function(err) {
+con.connect(function (err) {
 	if (err) return console.log(err);
 	console.log('MYSQL is READY!');
 	client.on('ready', () => {
@@ -46,8 +46,7 @@ con.connect(function(err) {
 		guild.channels.find((ch) => ch.position == 0 || ch.type == 'text').send({
 			embed: {
 				title: `Hi guys :D`,
-				description:
-					'To set work channnel: **+setchannel #chat_name**\n' +
+				description: 'To set work channnel: **+setchannel #chat_name**\n' +
 					'example: +setchannel ' +
 					guild.channels.find((ch) => ch.position == 0 || ch.type == 'text') +
 					'\nIf you wonna add me to another server: [Click here](https://discordapp.com/api/oauth2/authorize?client_id=559247918280867848&permissions=0&scope=bot)',
@@ -111,7 +110,7 @@ con.connect(function(err) {
 			}
 		}
 		if (msg.channel.id !== guilds_settings[msg.guild.id]) return;
-		const img_formats = [ 'png', 'jpeg', 'jpg' ];
+		const img_formats = ['png', 'jpeg', 'jpg'];
 		var attch = msg.attachments.first();
 		if (
 			msg.content.indexOf('.') > -1 &&
@@ -124,19 +123,19 @@ con.connect(function(err) {
 			var url = attch.url ? attch.url : attch;
 			var urlToArr = url.toLowerCase().split('.');
 			if (img_formats.indexOf(urlToArr[urlToArr.length - 1]) == -1) return;
-			Jimp.read(url, function(err, img) {
+			Jimp.read(url, function (err, img) {
 				if (err) return;
-				img.resize(720, 480).getBase64(Jimp.AUTO, function(e, img64) {
+				img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
 					if (e) return;
 					fetch(`https://trace.moe/api/search?token=${process.env.trace_moe_token}`, {
-						method: 'POST',
-						body: JSON.stringify({
-							image: img64
-						}),
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					})
+							method: 'POST',
+							body: JSON.stringify({
+								image: img64
+							}),
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						})
 						.then((res) => {
 							return res.json();
 						})
@@ -145,17 +144,19 @@ con.connect(function(err) {
 								return msg.channel.send(
 									`Ugh.. i'm overwhelmed with requests, please wait for **${result.limit_ttl}** sec.`
 								);
-							var unique = function(arr) {
+							var unique = function (arr) {
 								let newarr = [];
 								arr.map((e) => {
-									if (newarr.indexOf(e) == -1) newarr = [ ...newarr, e ];
+									if (newarr.indexOf(e) == -1) newarr = [...newarr, e];
 								});
 								return newarr;
 							};
 							if (!result.docs) return;
 							for (i in result.docs) {
 								var e = result.docs[i];
-								if (e.similarity > 0.98)
+								if (e.similarity > 0.98) {
+									var video_url = `https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(e.filename)}?t=${e.at}&token=${e.tokenthumb}`.replace(/[)]/g, '%29')
+
 									return msg.channel.send({
 										embed: {
 											title: e.title_romaji,
@@ -165,22 +166,17 @@ con.connect(function(err) {
 												text: `requested by ${msg.author.username}, author: wnm#1663`
 											},
 											thumbnail: {
-												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(
-													e.filename
-												)}&t=${e.at}&token=${e.tokenthumb}`
+												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
 											},
-											description: `Anime: **${e.title_romaji}**\nEpisode: **${e.episode}**\nTimestamp: **${~~(
-												e.at / 60
-											)}:${e.at -
-												~~(
-													e.at / 60
-												)}**\nMyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\nVideo: [Click!](https://media.trace.moe/video/${e.anilist_id}/${encodeURIComponent(
-												e.filename
-											)}?t=${e.at}&token=${e.tokenthumb})\nNSFW: ${e.is_adult
-												? '**Yes! Yes! Yes!**'
-												: '**No 😫**'} `
+											description: `Anime: **${e.title_romaji}**
+											Episode: **${e.episode}**
+											Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**
+											MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})
+											Video: [Click!](${video_url})
+											NSFW: ${e.is_adult? '**Yes! Yes! Yes!**' : '**No 😫**'} `
 										}
 									});
+								}
 							}
 							var rawdesc = result.docs.map((e, i) => {
 								return `[${e.title_romaji}](https://myanimelist.net/anime/${e.mal_id})`;
