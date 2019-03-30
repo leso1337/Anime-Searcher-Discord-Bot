@@ -141,6 +141,10 @@ con.connect(function(err) {
 							return res.json();
 						})
 						.then((result) => {
+							if (result.limit == 0)
+								return msg.channel.send(
+									`Ugh.. i'm overwhelmed with requests, please wait for **${result.limit_ttl}** sec.`
+								);
 							var unique = function(arr) {
 								let newarr = [];
 								arr.map((e) => {
