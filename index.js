@@ -3,13 +3,13 @@ const Discord = require(`discord.js`);
 const Jimp = require(`jimp`);
 const mysql = require('mysql');
 const client = new Discord.Client();
-
+const config = require('./config.json');
 var cooldowns = {};
 var con = mysql.createConnection({
-	host: process.env.host,
-	user: process.env.user,
-	password: process.env.pass,
-	database: process.env.database
+	host: config.db_host,
+	user: config.db_user,
+	password: config.db_pass,
+	database: config.db
 });
 var guilds_settings = {};
 
@@ -127,7 +127,7 @@ con.connect(function (err) {
 				if (err) return;
 				img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
 					if (e) return;
-					fetch(`https://trace.moe/api/search?token=${process.env.trace_moe_token}`, {
+					fetch(`https://trace.moe/api/search?token=${config.trace_moe_token}`, {
 							method: 'POST',
 							body: JSON.stringify({
 								image: img64
@@ -203,4 +203,4 @@ con.connect(function (err) {
 		}
 	});
 });
-client.login(process.env.TOKEN);
+client.login(config.bot_token);
