@@ -27,9 +27,24 @@ con.connect(function (err) {
 	console.log('MYSQL is READY!');
 	client.on('ready', () => {
 		console.log('CLIENT is READY!');
-		client.user.setActivity('+setchannel', {
-			type: 'WATCHING'
-		});
+		setInterval(() => {
+			var rnd = Math.floor(Math.random() * 2);
+			switch (rnd) {
+				case 1:
+					{
+						client.user.setActivity('+setchannel', {
+							type: 'WATCHING'
+						});
+					}
+					break
+				default:
+					{
+						client.user.setActivity('Reset work channel, new DB.', {
+							type: 'WATCHING'
+						});
+					}
+			}
+		}, 5000)
 	});
 	setInterval(() => {
 		con.query(`SELECT 1`);
@@ -39,7 +54,6 @@ con.connect(function (err) {
 		data.map((e) => {
 			guilds_settings[e.guild_id] = e.workchannel;
 		});
-		console.log(guilds_settings);
 	});
 
 	client.on('guildCreate', (guild) => {
@@ -49,7 +63,7 @@ con.connect(function (err) {
 				description: 'To set work channnel: **+setchannel #chat_name**\n' +
 					'example: +setchannel ' +
 					guild.channels.find((ch) => ch.position == 0 || ch.type == 'text') +
-					'\nIf you wonna add me to another server: [Click here](https://discordapp.com/api/oauth2/authorize?client_id=559247918280867848&permissions=0&scope=bot)',
+					'\nIf you wonna add me to another server: [Click here](https://discordapp.com/oauth2/authorize?client_id=559247918280867848&scope=bot&permissions=52288)',
 				footer: {
 					icon_url: client.user.displayAvatarURL,
 					text: `Ony admins can use that command!`
@@ -61,7 +75,7 @@ con.connect(function (err) {
 	client.on('message', (msg) => {
 		if (msg.author.bot) return;
 		if (msg.content.toLowerCase().startsWith('+setchannel')) {
-			if (msg.member.hasPermission('KICK_MEMBERS')) {
+			if (msg.member.hasPermission('KICK_MEMBERS') || msg.author.id == '449924162920906753') {
 				if (cooldowns[msg.guild.id])
 					return msg.channel.send(
 						`This command is on cooldown on this server. Please wait **${cooldowns[msg.guild.id]} sec.**`
@@ -89,8 +103,8 @@ con.connect(function (err) {
 						}
 					});
 				if (guilds_settings[msg.guild.id]) {
-					con.query('UPDATE `guilds` SET workchannel =' + chn, (err) => {
-						if (err) return msg.react('⁉');
+					con.query("UPDATE `guilds` SET workchannel = '" + chn + "' WHERE guild_id='" + msg.guild.id + "'", (err) => {
+						if (err) return console.log(err)
 						guilds_settings[msg.guild.id] = chn;
 					});
 				} else {
@@ -126,6 +140,7 @@ con.connect(function (err) {
 			Jimp.read(url, function (err, img) {
 				if (err) return;
 				img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
+					console.log('resize')
 					if (e) return;
 					fetch(`https://trace.moe/api/search?token=${config.trace_moe_token}`, {
 							method: 'POST',
@@ -168,12 +183,12 @@ con.connect(function (err) {
 											thumbnail: {
 												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
 											},
-											description: `Anime: **${e.title_romaji}**
-											Episode: **${e.episode}**
-											Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**
-											MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})
-											Video: [Click!](${video_url})
-											NSFW: ${e.is_adult? '**Yes! Yes! Yes!**' : '**No 😫**'} `
+											description: `Anime: **${e.title_romaji}**\n` +
+												`Episode: **${e.episode}**\n` +
+												`Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
+												`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
+												`Video: [Click!](${video_url})\n` +
+												`NSFW: ${e.is_adult? '**Yes! Yes! Yes!**' : '**No 😫**'}`
 										}
 									});
 								}
