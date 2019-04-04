@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 const mysql = require('mysql');
 const client = new Discord.Client();
 const config = require('./config.json');
-const Jimp = require(`Jimp`)
+const Jimp = require(`jimp`)
 const img_formats = ['png', 'jpeg', 'jpg'];
 var cooldowns = {};
 var con = mysql.createConnection({
@@ -166,7 +166,7 @@ con.connect(function (err) {
 							other_results = unique(other_results).join('\n')
 							msg.channel.send({
 								embed: {
-									title: `That's what, you have been waiting for!`,
+									title: `That's what you have been waiting for!`,
 									color: 7589871,
 									footer: {
 										icon_url: msg.author.displayAvatarURL,
@@ -184,7 +184,7 @@ con.connect(function (err) {
 										`NSFW: ${e.is_adult ? '**Yes! Yes! Yes!**' : '**No 😫**'}`,
 									fields: [{
 										name: "Other results:",
-										value: other_results
+										value: other_results.length == 0 ? "**No results 🐥**" : other_results
 									}]
 								},
 							});
