@@ -1,9 +1,18 @@
 <h3 style="text-align: left;">This bot can help you to find any anime by screenshot.</h3>
 <h1 style="text-align: center;">INSTRUCTION:</h1>
 <p>
-1. Add bot to your server,<br>
-2. Set work channel: <b>+setchannel #channel_name</b><br>
-3. Send any anime image to work channel ;D<br>
+<h3>Installation: <br>
+1) Create mysql table:  
+CREATE TABLE `guilds` (<br>
+  `guild_id` varchar(21) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,<br>
+  `workchannel` varchar(18) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL<br>
+)<br>
+2) Install node.js,<br>
+3) Edit config.json <b>(if you don't have trace.moe token set ""trace_moe_token": false)</b>,<br>
+4) Start bot: cmd -> <b>node index.js</b><br>
+5) Add bot to your server,<br>
+6) Set work channel: <b>+setchannel #channel_name</b><br>
+7) Send any anime image to work channel ;D<br>
 </p>
 <p><h3>How does it works?</h3>
 Bot sends image to https://trace.moe/ and resend embeded reult to your work channel.
