@@ -3,11 +3,10 @@
 <p>
 <h3>Installation: <br></h3>
 1) Create mysql table:  <br>
-```sql
-CREATE TABLE `guilds` (
-  `guild_id` varchar(21) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `workchannel` varchar(18) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-)```
+CREATE TABLE `guilds` (<br>
+  `guild_id` varchar(21) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,<br>
+  `workchannel` varchar(18) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL<br>
+)<br>
 2) Install node.js,<br>
 3) Edit config.json <b><br>( if you don't have trace.moe token set "trace_moe_token": false )</b>,<br>
 4) Start bot: cmd -> <b>node index.js</b><br>
