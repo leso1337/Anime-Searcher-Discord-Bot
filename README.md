@@ -1,8 +1,8 @@
 <h3 style="text-align: left;">This bot can help you to find any anime by screenshot.</h3>
 <h1 style="text-align: center;">INSTRUCTION:</h1>
 <p>
-<h3>Installation: <br>
-1) Create mysql table:  
+<h3>Installation: <br></h3>
+1) Create mysql table:  <br>
 CREATE TABLE `guilds` (<br>
   `guild_id` varchar(21) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,<br>
   `workchannel` varchar(18) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL<br>
