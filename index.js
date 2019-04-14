@@ -4,15 +4,21 @@ const mysql = require('mysql');
 const client = new Discord.Client();
 const config = require('./config.json');
 const Jimp = require(`jimp`)
+const events = {
+	MESSAGE_REACTION_ADD: 'messageReactionAdd',
+	MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+};
+
 const img_formats = ['png', 'jpeg', 'jpg'];
-var cooldowns = {};
 var con = mysql.createConnection({
 	host: config.db_host,
 	user: config.db_user,
 	password: config.db_pass,
 	database: config.db
 });
+var cooldowns = {};
 var guilds_settings = {};
+var msg_authors = {}; // user = [guild,channel,msg] (id's)
 
 setInterval(() => {
 	for (var i = 0; i < Object.keys(cooldowns).length; i++) {
@@ -71,6 +77,43 @@ con.connect(function (err) {
 				}
 			}
 		});
+	});
+
+	client.on('raw', async event => {
+		// `event.t` is the raw event name
+		if (!events.hasOwnProperty(event.t)) return;
+
+		const {
+			d: data
+		} = event;
+		const user = client.users.get(data.user_id);
+		const channel = client.channels.get(data.channel_id) || await user.createDM();
+		if (channel.messages.has(data.message_id)) return;
+		const message = await channel.fetchMessage(data.message_id);
+		const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+		const reaction = message.reactions.get(emojiKey);
+
+		client.emit(events[event.t], reaction, user);
+	});
+
+	client.on('messageReactionAdd', (reaction, user) => {
+		var userid = user.id
+		if (userid == client.user.id) return
+		reaction_user = msg_authors[userid];
+		console.log(reaction_user)
+		if (reaction_user) {
+			console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+			if (reaction.emoji.name == '👌') {
+				delete msg_authors[userid];
+			} else if (reaction.emoji.name == '⛔') {
+				client.guilds.find(guild => guild.id == reaction_user[0])
+					.channels.find(chann => chann.id == reaction_user[1])
+					.fetchMessage(reaction_user[2])
+					.then(fetchedmsg => {
+						fetchedmsg.delete();
+					})
+			}
+		}
 	});
 
 	client.on('message', (msg) => {
@@ -187,9 +230,13 @@ con.connect(function (err) {
 										value: other_results.length == 0 ? "**No results 🐥**" : other_results
 									}]
 								},
-							});
+							}).then(sendedmsg => {
+								sendedmsg.react('👌');
+								sendedmsg.react('⛔');
+								var msg_author = msg.author.id;
+								msg_authors[msg_author] = [msg.guild.id, msg.channel.id, sendedmsg.id];
+							})
 						})
-
 				});
 			});
 		}
