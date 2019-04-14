@@ -8,7 +8,7 @@ CREATE TABLE `guilds` (<br>
   `workchannel` varchar(18) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL<br>
 )<br>
 2) Install node.js,<br>
-3) Edit config.json <b>(if you don't have trace.moe token set ""trace_moe_token": false)</b>,<br>
+3) Edit config.json <b><br>( if you don't have trace.moe token set "trace_moe_token": false )</b>,<br>
 4) Start bot: cmd -> <b>node index.js</b><br>
 5) Add bot to your server,<br>
 6) Set work channel: <b>+setchannel #channel_name</b><br>
