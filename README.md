@@ -15,7 +15,7 @@ CREATE TABLE `guilds` (<br>
 7) Send any anime image to work channel ;D<br>
 </p>
 <p><h3>How does it works?</h3>
-Bot sends image to https://trace.moe/ and resend embeded reult to your work channel.
+Bot sends image to https://trace.moe/ and resend reult to your work channel.
 <p>
 <p>
 <h3>Why I can't find the search result?</h3>
