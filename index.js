@@ -156,19 +156,22 @@ con.connect(function (err) {
 							embed: {
 								color: 0xff0000,
 								description: `:interrobang: Syntax: **+setchannel ${msg.guild.channels.find(
-								(ch) => ch.position == 1 || ch.type == 'text'
-							)}**`
+									(ch) => ch.position == 1 || ch.type == 'text'
+								)}**`
 							}
 						});
-					if (guilds_settings[msg.guild.id][0]) {
-						con.query("UPDATE `guilds` SET workchannel = '" + chn + "' WHERE guild_id='" + msg.guild.id + "'", (err) => {
+					if (!guilds_settings[msg.guild.id]) {
+						con.query("INSERT INTO `guilds` VALUES ('" + msg.guild.id + "','" + chn + "','eng')", (err) => {
 							if (err) return console.log(err)
+							guilds_settings[msg.guild.id] = [];
 							guilds_settings[msg.guild.id][0] = chn;
 							guilds_settings[msg.guild.id][1] = "eng";
 						});
+
 					} else {
-						con.query("INSERT INTO `guilds` VALUES ('" + msg.guild.id + "','" + chn + "')", (err) => {
-							if (err) return msg.react('⁉');
+						con.query("UPDATE `guilds` SET workchannel = '" + chn + "' WHERE guild_id='" + msg.guild.id + "'", (err) => {
+							if (err) return console.log(err)
+							guilds_settings[msg.guild.id] = [];
 							guilds_settings[msg.guild.id][0] = chn;
 							guilds_settings[msg.guild.id][1] = "eng";
 						});
@@ -201,15 +204,15 @@ con.connect(function (err) {
 					if (err) return;
 					img.resize(720, 480).getBase64(Jimp.AUTO, function (e, img64) {
 						if (e) return;
-						fetch(`https://trace.moe/api/search${config.trace_moe_token ? '?token='+config.trace_moe_token : ""}`, {
-								method: 'POST',
-								body: JSON.stringify({
-									image: img64
-								}),
-								headers: {
-									'Content-Type': 'application/json'
-								}
-							})
+						fetch(`https://trace.moe/api/search${config.trace_moe_token ? '?token=' + config.trace_moe_token : ""}`, {
+							method: 'POST',
+							body: JSON.stringify({
+								image: img64
+							}),
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						})
 							.then((res) => {
 								return res.json();
 							})
@@ -239,33 +242,33 @@ con.connect(function (err) {
 										if (err) throw err;
 										if (guilds_settings[msg.guild.id][1] == "eng") {
 											msg.channel.send({
-													files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
-													embed: {
-														title: `That's what you have been waiting for!`,
-														color: 7589871,
-														footer: {
-															icon_url: msg.author.displayAvatarURL,
-															text: `Requested by ${msg.author.username}, Author: wnm#1663`
-														},
-														thumbnail: {
-															url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
-														},
-														description: `Anime: **${e.title_romaji}**\n` +
-															`Similarity: **${e.similarity.toFixed(4)*100}%**\n` +
-															`Episode: **${e.episode}**\n` +
-															`Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
-															`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
-															`Video: [Click!](${video_url})\n` +
-															`NSFW: ${e.is_adult ? '**Yes! Yes! Yes!**' : '**No 😫**'}`,
-														image: {
-															url: `attachment://${e.mal_id}.gif`
-														},
-														fields: [{
-															name: "Other results:",
-															value: other_results.length == 0 ? "**No results 🐥**" : other_results
-														}]
+												files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
+												embed: {
+													title: `That's what you have been waiting for!`,
+													color: 7589871,
+													footer: {
+														icon_url: msg.author.displayAvatarURL,
+														text: `Requested by ${msg.author.username}, Author: wnm#1663`
 													},
-												})
+													thumbnail: {
+														url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+													},
+													description: `Anime: **${e.title_romaji}**\n` +
+														`Similarity: **${e.similarity.toFixed(4) * 100}%**\n` +
+														`Episode: **${e.episode}**\n` +
+														`Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
+														`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
+														`Video: [Click!](${video_url})\n` +
+														`NSFW: ${e.is_adult ? '**Yes! Yes! Yes!**' : '**No 😫**'}`,
+													image: {
+														url: `attachment://${e.mal_id}.gif`
+													},
+													fields: [{
+														name: "Other results:",
+														value: other_results.length == 0 ? "**No results 🐥**" : other_results
+													}]
+												},
+											})
 												.then(sendedmsg => {
 													fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
 													fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
@@ -276,33 +279,33 @@ con.connect(function (err) {
 												})
 										} else {
 											msg.channel.send({
-													files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
-													embed: {
-														title: `Вот что я нашёл!`,
-														color: 7589871,
-														footer: {
-															icon_url: msg.author.displayAvatarURL,
-															text: `Запрос от: ${msg.author.username}, Автор: wnm#1663`
-														},
-														thumbnail: {
-															url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
-														},
-														description: `Название: **${e.title_romaji}**\n` +
-															`Сходство: **${e.similarity.toFixed(4)*100}%**\n` +
-															`Серия: **${e.episode}**\n` +
-															`Время: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
-															`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
-															`Видео: [Click!](${video_url})\n` +
-															`18+: ${e.is_adult ? '**Да! Да! Да!**' : '**Нет 😫**'}`,
-														image: {
-															url: `attachment://${e.mal_id}.gif`
-														},
-														fields: [{
-															name: "Другие результаты:",
-															value: other_results.length == 0 ? "**Нет других результатов 🐥**" : other_results
-														}]
+												files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
+												embed: {
+													title: `Вот что я нашёл!`,
+													color: 7589871,
+													footer: {
+														icon_url: msg.author.displayAvatarURL,
+														text: `Запрос от: ${msg.author.username}, Автор: wnm#1663`
 													},
-												})
+													thumbnail: {
+														url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+													},
+													description: `Название: **${e.title_romaji}**\n` +
+														`Сходство: **${e.similarity.toFixed(4) * 100}%**\n` +
+														`Серия: **${e.episode}**\n` +
+														`Время: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
+														`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
+														`Видео: [Click!](${video_url})\n` +
+														`18+: ${e.is_adult ? '**Да! Да! Да!**' : '**Нет 😫**'}`,
+													image: {
+														url: `attachment://${e.mal_id}.gif`
+													},
+													fields: [{
+														name: "Другие результаты:",
+														value: other_results.length == 0 ? "**Нет других результатов 🐥**" : other_results
+													}]
+												},
+											})
 												.then(sendedmsg => {
 													fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
 													fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
