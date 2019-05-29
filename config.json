@@ -1,8 +1,8 @@
 {
-    "db_host": "",
-    "db_user": "",
-    "db_pass": "",
-    "db": "",
-    "trace_moe_token": "",
-    "bot_token": ""
+    "db_host": process.env.host,
+    "db_user": process.env.user,
+    "db_pass": process.env.pass,
+    "db": process.env.database,
+    "trace_moe_token": process.env.trace_moe_token,
+    "bot_token": process.env.TOKEN
 }
