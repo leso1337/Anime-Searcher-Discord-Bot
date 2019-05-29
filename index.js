@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 const Discord = require(`discord.js`);
 const mysql = require('mysql');
 const client = new Discord.Client();
-const config = require('./config.json');
+const config = require('./config.js');
 const Jimp = require(`jimp`)
 const events = {
 	MESSAGE_REACTION_ADD: 'messageReactionAdd',
