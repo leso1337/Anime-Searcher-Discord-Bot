@@ -10,8 +10,8 @@ const events = {
 };
 var fs = require('fs');
 var path = require('path');
-var download = require('download-file')
-var gify = require('gify');
+//var download = require('download-file')
+//var gify = require('gify');
 const langs = ["eng", "ru"]
 const img_formats = ['png', 'jpeg', 'jpg'];
 
@@ -236,92 +236,92 @@ con.connect(function (err) {
 									width: 480,
 									height: 320,
 								}
-								download(video_url, options, function (err) {
-									if (err) throw err
-									gify(`./videos/${e.mal_id}.mp4`, `./gifs/${e.mal_id}.gif`, gif_options, function (err) {
-										if (err) throw err;
-										if (guilds_settings[msg.guild.id][1] == "eng") {
-											msg.channel.send({
-												files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
-												embed: {
-													title: `That's what you have been waiting for!`,
-													color: 7589871,
-													footer: {
-														icon_url: msg.author.displayAvatarURL,
-														text: `Requested by ${msg.author.username}, Author: wnm#1663`
-													},
-													thumbnail: {
-														url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
-													},
-													description: `Anime: **${e.title_romaji}**\n` +
-														`Similarity: **${e.similarity.toFixed(4) * 100}%**\n` +
-														`Episode: **${e.episode}**\n` +
-														`Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
-														`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
-														`Video: [Click!](${video_url})\n` +
-														`NSFW: ${e.is_adult ? '**Yes! Yes! Yes!**' : '**No 😫**'}`,
-													image: {
-														url: `attachment://${e.mal_id}.gif`
-													},
-													fields: [{
-														name: "Other results:",
-														value: other_results.length == 0 ? "**No results 🐥**" : other_results
-													}]
-												},
-											})
-												.then(sendedmsg => {
-													fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
-													fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
-													sendedmsg.react('👌');
-													sendedmsg.react('⛔');
-													var msg_author = msg.author.id;
-													msg_authors[msg_author] = [msg.guild.id, msg.channel.id, sendedmsg.id];
-												})
-										} else {
-											msg.channel.send({
-												files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
-												embed: {
-													title: `Вот что я нашёл!`,
-													color: 7589871,
-													footer: {
-														icon_url: msg.author.displayAvatarURL,
-														text: `Запрос от: ${msg.author.username}, Автор: wnm#1663`
-													},
-													thumbnail: {
-														url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
-													},
-													description: `Название: **${e.title_romaji}**\n` +
-														`Сходство: **${e.similarity.toFixed(4) * 100}%**\n` +
-														`Серия: **${e.episode}**\n` +
-														`Время: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
-														`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
-														`Видео: [Click!](${video_url})\n` +
-														`18+: ${e.is_adult ? '**Да! Да! Да!**' : '**Нет 😫**'}`,
-													image: {
-														url: `attachment://${e.mal_id}.gif`
-													},
-													fields: [{
-														name: "Другие результаты:",
-														value: other_results.length == 0 ? "**Нет других результатов 🐥**" : other_results
-													}]
-												},
-											})
-												.then(sendedmsg => {
-													fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
-													fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
-													sendedmsg.react('👌');
-													sendedmsg.react('⛔');
-													var msg_author = msg.author.id;
-													msg_authors[msg_author] = [msg.guild.id, msg.channel.id, sendedmsg.id];
-													setTimeout(() => {
-														delete msg_authors[msg_author]
-													}, 30000)
-												})
-										}
-									});
-								})
+								//download(video_url, options, function (err) {
+								//	if (err) throw err
+								//	gify(`./videos/${e.mal_id}.mp4`, `./gifs/${e.mal_id}.gif`, gif_options, function (err) {
+								//		if (err) throw err;
+								if (guilds_settings[msg.guild.id][1] == "eng") {
+									msg.channel.send({
+										//files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
+										embed: {
+											title: `That's what you have been waiting for!`,
+											color: 7589871,
+											footer: {
+												icon_url: msg.author.displayAvatarURL,
+												text: `Requested by ${msg.author.username}, Author: wnm#1663`
+											},
+											thumbnail: {
+												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+											},
+											description: `Anime: **${e.title_romaji}**\n` +
+												`Similarity: **${e.similarity.toFixed(4) * 100}%**\n` +
+												`Episode: **${e.episode}**\n` +
+												`Timestamp: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
+												`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
+												`Video: [Click!](${video_url})\n` +
+												`NSFW: ${e.is_adult ? '**Yes! Yes! Yes!**' : '**No 😫**'}`,
+											image: {
+												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+											},
+											fields: [{
+												name: "Other results:",
+												value: other_results.length == 0 ? "**No results 🐥**" : other_results
+											}]
+										},
+									})
+										.then(sendedmsg => {
+											//	fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
+											//	fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
+											sendedmsg.react('👌');
+											sendedmsg.react('⛔');
+											var msg_author = msg.author.id;
+											msg_authors[msg_author] = [msg.guild.id, msg.channel.id, sendedmsg.id];
+										})
+								} else {
+									msg.channel.send({
+										//files: [new Discord.Attachment(`./gifs/${e.mal_id}.gif`, `${e.mal_id}.gif`)],
+										embed: {
+											title: `Вот что я нашёл!`,
+											color: 7589871,
+											footer: {
+												icon_url: msg.author.displayAvatarURL,
+												text: `Запрос от: ${msg.author.username}, Автор: wnm#1663`
+											},
+											thumbnail: {
+												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+											},
+											description: `Название: **${e.title_romaji}**\n` +
+												`Сходство: **${e.similarity.toFixed(4) * 100}%**\n` +
+												`Серия: **${e.episode}**\n` +
+												`Время: **${~~(e.at / 60)}:${~~(e.at % 60)}**\n` +
+												`MyAnimeList: [Click!](https://myanimelist.net/anime/${e.mal_id})\n` +
+												`Видео: [Click!](${video_url})\n` +
+												`18+: ${e.is_adult ? '**Да! Да! Да!**' : '**Нет 😫**'}`,
+											image: {
+												url: `https://trace.moe/thumbnail.php?anilist_id=${e.anilist_id}&file=${encodeURIComponent(e.filename)}&t=${e.at}&token=${e.tokenthumb}`
+											},
+											fields: [{
+												name: "Другие результаты:",
+												value: other_results.length == 0 ? "**Нет других результатов 🐥**" : other_results
+											}]
+										},
+									})
+										.then(sendedmsg => {
+											//	fs.unlink(`./gifs/${e.mal_id}.gif`, () => console.log(`deleted ${e.mal_id}.gif`));
+											//	fs.unlink(`./videos/${e.mal_id}.mp4`, () => console.log(`deleted ${e.mal_id}.mp4`));
+											sendedmsg.react('👌');
+											sendedmsg.react('⛔');
+											var msg_author = msg.author.id;
+											msg_authors[msg_author] = [msg.guild.id, msg.channel.id, sendedmsg.id];
+											setTimeout(() => {
+												delete msg_authors[msg_author]
+											}, 30000)
+										})
+								}
+								//});
 							})
-					});
+					})
+					//});
 				});
 			}
 		});
